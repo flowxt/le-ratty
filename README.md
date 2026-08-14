@@ -1,36 +1,65 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Le Ratty — leratty.fr
 
-## Getting Started
+Site vitrine des locations « Le Ratty » à Entremont (Glières-Val-de-Borne,
+Haute-Savoie) : deux appartements dans une maison rénovée.
 
-First, run the development server:
+- **Accueil** (`/`) — présentation de la maison et des deux appartements
+- **La Marmotte** (`/la-marmotte`) — 6 personnes, rez-de-chaussée
+- **Le Bouquetin** (`/le-bouquetin`) — 8 personnes, 1er étage
+- **La maison entière** (`/la-maison`) — les deux appartements, 14 personnes
+- **Contact** (`/contact`) — formulaire + infos pratiques
+
+## Démarrer
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Le site tourne sur [http://localhost:3000](http://localhost:3000).
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Calendriers de disponibilités
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+Chaque page logement affiche un calendrier « Disponible / Occupé ». Les
+données viennent de **Google Agenda**, que la propriétaire met à jour
+elle-même depuis son téléphone ou son ordinateur :
 
-## Learn More
+1. Créer un compte Google (ou utiliser un compte existant).
+2. Dans [Google Agenda](https://calendar.google.com), créer **3 agendas** :
+   « La Marmotte », « Le Bouquetin » et « Maison entière ».
+3. À chaque réservation, ajouter un événement sur toute la durée du séjour
+   dans l'agenda du bien concerné (l'agenda « Maison entière » sert quand les
+   deux appartements sont loués ensemble : il bloque automatiquement les deux).
+4. Pour chaque agenda : *Paramètres* → *Intégrer l'agenda* → copier
+   l'**adresse secrète au format iCal**.
+5. Copier `.env.example` vers `.env.local` et coller les 3 adresses :
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+ICS_URL_MARMOTTE=https://calendar.google.com/calendar/ical/.../basic.ics
+ICS_URL_BOUQUETIN=https://calendar.google.com/calendar/ical/.../basic.ics
+ICS_URL_MAISON=https://calendar.google.com/calendar/ical/.../basic.ics
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Le site relit les agendas toutes les 30 minutes (`app/api/disponibilites/route.ts`).
+Logique appliquée :
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- une réservation « Maison entière » rend **les deux** appartements occupés ;
+- la page « maison entière » est occupée dès qu'**un** des biens est réservé.
 
-## Deploy on Vercel
+En production (Vercel…), renseigner ces 3 variables dans les variables
+d'environnement du projet.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Bilingue FR / EN
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Le site existe en français (racine, ex. `/la-marmotte`) et en anglais sous le
+préfixe `/en` (ex. `/en/la-marmotte`). Le sélecteur drapeaux 🇫🇷/🇬🇧 est dans
+l'en-tête. Tous les textes sont centralisés :
+
+- `lib/logements.ts` — contenus des logements et atouts (fr/en) ;
+- `lib/avis.ts` — avis clients (Booking + Google) ;
+- chaque composant contient son petit dictionnaire `T = { fr, en }`.
+
+## Coordonnées
+
+Téléphone et e-mail sont définis dans `lib/logements.ts` (`contact`) et
+utilisés partout (footer, page contact, formulaire).

@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import AvisSection from "@/components/avis-section";
+import ClassementBadge from "@/components/classement-badge";
 import { adresse, getAtouts, getLogements } from "@/lib/logements";
 import { localePrefix, type Lang } from "@/lib/i18n";
 
@@ -165,6 +166,10 @@ export default function HomeContent({ lang = "fr" }: { lang?: Lang }) {
         </h2>
         <p className="mt-6 leading-relaxed text-bark-light">{t.presTexte1}</p>
         <p className="mt-4 leading-relaxed text-bark-light">{t.presTexte2}</p>
+
+        <div className="mt-8 flex justify-center">
+          <ClassementBadge lang={lang} />
+        </div>
 
         <figure className="mt-10 rounded-2xl border border-sand-dark bg-sand/50 p-7 sm:p-9">
           <blockquote className="font-serif text-lg italic leading-relaxed text-bark">

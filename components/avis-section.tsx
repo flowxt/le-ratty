@@ -4,13 +4,13 @@ import type { Lang } from "@/lib/i18n";
 const T = {
   fr: {
     titre: "Ils ont séjourné au Ratty",
-    booking: "Exceptionnel · 11 expériences vécues sur Booking.com",
+    booking: "Exceptionnel · 9,6/10 sur Booking.com",
     google: "5/5 sur Google — voir les avis",
     source: "Avis",
   },
   en: {
     titre: "Guests loved their stay",
-    booking: "Exceptional · 11 reviews on Booking.com",
+    booking: "Exceptional · 9.6/10 on Booking.com",
     google: "5/5 on Google — see the reviews",
     source: "Review from",
   },

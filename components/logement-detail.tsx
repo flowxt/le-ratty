@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import Gallery from "@/components/gallery";
 import AvailabilityCalendar from "@/components/availability-calendar";
+import ClassementBadge from "@/components/classement-badge";
 import type { Logement } from "@/lib/logements";
 import { localePrefix, type Lang } from "@/lib/i18n";
 
@@ -97,6 +98,7 @@ export default function LogementDetail({
             >
               {t.reserver}
             </Link>
+            <ClassementBadge lang={lang} className="mt-6 w-full justify-center" />
           </aside>
         </div>
       </section>

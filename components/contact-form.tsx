@@ -11,27 +11,23 @@ const T = {
       "Le Bouquetin (8 personnes)",
       "La maison entière (14 personnes)",
     ],
-    sujet: (bien: string) => `Demande de réservation — ${bien}`,
-    corps: {
-      bonjour: "Bonjour,",
-      souhait: "Je souhaite réserver :",
-      nom: "Nom et prénom :",
-      dates: "Dates souhaitées :",
-      personnes: "Nombre de personnes :",
-    },
     labels: {
       bien: "Logement souhaité",
       nom: "Nom et prénom",
       nomPh: "Votre nom",
+      email: "Votre e-mail",
+      emailPh: "vous@exemple.fr",
       personnes: "Nombre de personnes",
       dates: "Dates souhaitées",
       datesPh: "Ex. : du 14 au 21 février 2027",
       message: "Votre message",
       messagePh: "Une question, une précision sur votre séjour…",
       envoyer: "Envoyer ma demande",
-      note: (email: string) =>
-        `Le bouton ouvre votre messagerie avec la demande pré-remplie, à envoyer à ${email}.`,
+      envoi: "Envoi en cours…",
     },
+    succes:
+      "Merci ! Votre demande a bien été envoyée. Nous vous répondrons rapidement.",
+    erreur: `Une erreur est survenue. Vous pouvez nous écrire directement à ${contact.email} ou nous appeler au ${contact.telephone}.`,
   },
   en: {
     biens: [
@@ -39,53 +35,72 @@ const T = {
       "Le Bouquetin (sleeps 8)",
       "The whole house (sleeps 14)",
     ],
-    sujet: (bien: string) => `Booking request — ${bien}`,
-    corps: {
-      bonjour: "Hello,",
-      souhait: "I would like to book:",
-      nom: "Full name:",
-      dates: "Requested dates:",
-      personnes: "Number of guests:",
-    },
     labels: {
       bien: "Accommodation",
       nom: "Full name",
       nomPh: "Your name",
+      email: "Your e-mail",
+      emailPh: "you@example.com",
       personnes: "Number of guests",
       dates: "Requested dates",
       datesPh: "E.g.: 14 to 21 February 2027",
       message: "Your message",
       messagePh: "A question, a detail about your stay…",
       envoyer: "Send my request",
-      note: (email: string) =>
-        `The button opens your e-mail app with a pre-filled request to ${email}.`,
+      envoi: "Sending…",
     },
+    succes: "Thank you! Your request has been sent. We will get back to you shortly.",
+    erreur: `Something went wrong. You can write to us directly at ${contact.email} or call ${contact.telephone}.`,
   },
 };
+
+type Etat = "idle" | "envoi" | "succes" | "erreur";
 
 export default function ContactForm({ lang = "fr" }: { lang?: Lang }) {
   const t = T[lang];
   const [bien, setBien] = useState(t.biens[0]);
+  const [etat, setEtat] = useState<Etat>("idle");
 
-  const envoyer = (e: React.FormEvent<HTMLFormElement>) => {
+  const envoyer = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const donnees = new FormData(e.currentTarget);
-    const sujet = t.sujet(bien);
-    const corps = [
-      t.corps.bonjour,
-      ``,
-      `${t.corps.souhait} ${bien}`,
-      `${t.corps.nom} ${donnees.get("nom")}`,
-      `${t.corps.dates} ${donnees.get("dates")}`,
-      `${t.corps.personnes} ${donnees.get("personnes")}`,
-      ``,
-      `${donnees.get("message")}`,
-    ].join("\n");
-    window.location.href = `mailto:${contact.email}?subject=${encodeURIComponent(sujet)}&body=${encodeURIComponent(corps)}`;
+    const form = e.currentTarget;
+    const donnees = new FormData(form);
+    setEtat("envoi");
+    try {
+      const res = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          bien,
+          nom: donnees.get("nom"),
+          email: donnees.get("email"),
+          dates: donnees.get("dates"),
+          personnes: donnees.get("personnes"),
+          message: donnees.get("message"),
+        }),
+      });
+      if (!res.ok) throw new Error(String(res.status));
+      setEtat("succes");
+      form.reset();
+      setBien(t.biens[0]);
+    } catch {
+      setEtat("erreur");
+    }
   };
 
   const champ =
     "w-full rounded-xl border border-sand-dark bg-cream px-4 py-3 text-bark placeholder:text-bark-light/60 focus:outline-none focus:ring-2 focus:ring-corten";
+
+  if (etat === "succes") {
+    return (
+      <div className="rounded-xl border border-corten/30 bg-cream p-6 text-center">
+        <p className="text-2xl" aria-hidden>
+          ✓
+        </p>
+        <p className="mt-2 font-bold text-bark">{t.succes}</p>
+      </div>
+    );
+  }
 
   return (
     <form onSubmit={envoyer} className="space-y-4">
@@ -114,6 +129,22 @@ export default function ContactForm({ lang = "fr" }: { lang?: Lang }) {
           <input id="nom" name="nom" required className={champ} placeholder={t.labels.nomPh} />
         </div>
         <div>
+          <label htmlFor="email" className="mb-1.5 block text-sm font-bold text-bark">
+            {t.labels.email}
+          </label>
+          <input
+            id="email"
+            name="email"
+            type="email"
+            required
+            className={champ}
+            placeholder={t.labels.emailPh}
+          />
+        </div>
+      </div>
+
+      <div className="grid gap-4 sm:grid-cols-2">
+        <div>
           <label htmlFor="personnes" className="mb-1.5 block text-sm font-bold text-bark">
             {t.labels.personnes}
           </label>
@@ -128,13 +159,12 @@ export default function ContactForm({ lang = "fr" }: { lang?: Lang }) {
             placeholder="4"
           />
         </div>
-      </div>
-
-      <div>
-        <label htmlFor="dates" className="mb-1.5 block text-sm font-bold text-bark">
-          {t.labels.dates}
-        </label>
-        <input id="dates" name="dates" required className={champ} placeholder={t.labels.datesPh} />
+        <div>
+          <label htmlFor="dates" className="mb-1.5 block text-sm font-bold text-bark">
+            {t.labels.dates}
+          </label>
+          <input id="dates" name="dates" required className={champ} placeholder={t.labels.datesPh} />
+        </div>
       </div>
 
       <div>
@@ -150,13 +180,19 @@ export default function ContactForm({ lang = "fr" }: { lang?: Lang }) {
         />
       </div>
 
+      {etat === "erreur" && (
+        <p className="rounded-xl border border-corten/40 bg-corten/10 px-4 py-3 text-sm text-corten-dark">
+          {t.erreur}
+        </p>
+      )}
+
       <button
         type="submit"
-        className="w-full rounded-full bg-corten px-6 py-3.5 font-bold text-cream transition-colors hover:bg-corten-dark sm:w-auto"
+        disabled={etat === "envoi"}
+        className="w-full rounded-full bg-corten px-6 py-3.5 font-bold text-cream transition-colors hover:bg-corten-dark disabled:opacity-60 sm:w-auto"
       >
-        {t.labels.envoyer}
+        {etat === "envoi" ? t.labels.envoi : t.labels.envoyer}
       </button>
-      <p className="text-xs text-bark-light">{t.labels.note(contact.email)}</p>
     </form>
   );
 }

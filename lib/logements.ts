@@ -63,6 +63,15 @@ const localCommun: PhotoDef = {
   },
 };
 
+// Vue sur la montagne enneigée depuis la maison (commune aux deux appartements).
+const vueAppart: PhotoDef = {
+  src: "/photo/vue-appart.jpg",
+  alt: {
+    fr: "Vue sur la montagne enneigée depuis la maison",
+    en: "View over the snow-covered mountain from the house",
+  },
+};
+
 const marmotteDef: LogementDef = {
   slug: "la-marmotte",
   nom: { fr: "La Marmotte", en: "La Marmotte" },
@@ -140,8 +149,19 @@ const marmotteDef: LogementDef = {
       },
     },
     {
+      src: "/photo/marmotte/vue-cuisine.jpg",
+      alt: {
+        fr: "Cuisine équipée et grande table de La Marmotte",
+        en: "Fully equipped kitchen and large table, La Marmotte",
+      },
+    },
+    {
       src: "/photo/marmotte/cuisine.jpeg",
       alt: { fr: "Cuisine équipée de La Marmotte", en: "Fully equipped kitchen, La Marmotte" },
+    },
+    {
+      src: "/photo/marmotte/lit-double-marmotte.jpeg",
+      alt: { fr: "Chambre avec lit double de La Marmotte", en: "Double bedroom, La Marmotte" },
     },
     {
       src: "/photo/marmotte/chambre-2lits.jpeg",
@@ -156,14 +176,15 @@ const marmotteDef: LogementDef = {
       alt: { fr: "Chambre avec vue sur la montagne", en: "Bedroom with mountain view" },
     },
     ...sdbCommune,
-    localCommun,
     {
-      src: "/photo/lebouquetin/terrasse.jpeg",
+      src: "/photo/marmotte/terrasse-marmotte.jpeg",
       alt: {
-        fr: "Terrasse au rez-de-chaussée avec parasol et barbecue",
-        en: "Ground-floor terrace with parasol and barbecue",
+        fr: "Terrasse de La Marmotte avec barbecue et bains de soleil",
+        en: "La Marmotte terrace with barbecue and sun loungers",
       },
     },
+    localCommun,
+    vueAppart,
   ],
   calendrier: "marmotte",
 };
@@ -270,6 +291,13 @@ const bouquetinDef: LogementDef = {
       },
     },
     {
+      src: "/photo/lebouquetin/terrasse.jpeg",
+      alt: {
+        fr: "Terrasse avec parasol et barbecue",
+        en: "Terrace with parasol and barbecue",
+      },
+    },
+    {
       src: "/photo/lebouquetin/terrasse-suite.jpeg",
       alt: {
         fr: "Terrasse avec les garde-corps en découpe laser Le Ratty",
@@ -277,6 +305,7 @@ const bouquetinDef: LogementDef = {
       },
     },
     localCommun,
+    vueAppart,
   ],
   calendrier: "bouquetin",
 };
@@ -401,6 +430,7 @@ const maisonDef: LogementDef = {
       },
     },
     localCommun,
+    vueAppart,
   ],
   calendrier: "maison",
 };
@@ -432,6 +462,12 @@ export const contact = {
   email: "leraty74.entremont@gmail.com",
   telephone: "06 82 55 99 41",
   telephoneHref: "tel:+33682559941",
+};
+
+// Classement officiel « Meublé de Tourisme » (Atout France, 2024, valable 5 ans).
+export const classement = {
+  etoiles: 2,
+  annee: 2024,
 };
 
 export const adresse = {

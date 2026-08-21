@@ -2,7 +2,7 @@ import { NextRequest } from "next/server";
 
 /**
  * Renvoie les périodes occupées d'un bien à partir de calendriers iCal
- * (adresses secrètes Google Agenda, définies dans .env.local) :
+ * (liens Abritel .ics, définis dans .env.local) :
  *
  *   ICS_URL_MARMOTTE  → réservations de La Marmotte seule
  *   ICS_URL_BOUQUETIN → réservations du Bouquetin seul

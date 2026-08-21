@@ -18,29 +18,18 @@ npm run dev
 
 Le site tourne sur [http://localhost:3000](http://localhost:3000).
 
-## Calendriers de disponibilités
+## Calendriers de disponibilités (Abritel)
 
-Chaque page logement affiche un calendrier « Disponible / Occupé ». Les
-données viennent de **Google Agenda**, que la propriétaire met à jour
-elle-même depuis son téléphone ou son ordinateur :
-
-1. Créer un compte Google (ou utiliser un compte existant).
-2. Dans [Google Agenda](https://calendar.google.com), créer **3 agendas** :
-   « La Marmotte », « Le Bouquetin » et « Maison entière ».
-3. À chaque réservation, ajouter un événement sur toute la durée du séjour
-   dans l'agenda du bien concerné (l'agenda « Maison entière » sert quand les
-   deux appartements sont loués ensemble : il bloque automatiquement les deux).
-4. Pour chaque agenda : *Paramètres* → *Intégrer l'agenda* → copier
-   l'**adresse secrète au format iCal**.
-5. Copier `.env.example` vers `.env.local` et coller les 3 adresses :
+Chaque page logement affiche un calendrier « Disponible / Occupé » alimenté par
+les liens **iCal Abritel**. Dans `.env.local` :
 
 ```bash
-ICS_URL_MARMOTTE=https://calendar.google.com/calendar/ical/.../basic.ics
-ICS_URL_BOUQUETIN=https://calendar.google.com/calendar/ical/.../basic.ics
-ICS_URL_MAISON=https://calendar.google.com/calendar/ical/.../basic.ics
+ICS_URL_MARMOTTE=https://www.abritel.fr/icalendar/xxxx.ics?nonTentative
+ICS_URL_BOUQUETIN=https://www.abritel.fr/icalendar/xxxx.ics?nonTentative
+ICS_URL_MAISON=https://www.abritel.fr/icalendar/xxxx.ics?nonTentative
 ```
 
-Le site relit les agendas toutes les 30 minutes (`app/api/disponibilites/route.ts`).
+Le site relit les calendriers toutes les 30 minutes (`app/api/disponibilites/route.ts`).
 Logique appliquée :
 
 - une réservation « Maison entière » rend **les deux** appartements occupés ;
@@ -48,6 +37,28 @@ Logique appliquée :
 
 En production (Vercel…), renseigner ces 3 variables dans les variables
 d'environnement du projet.
+
+## Formulaire de contact (Resend)
+
+Les demandes du formulaire sont envoyées par e-mail à la propriétaire via
+[Resend](https://resend.com). Dans `.env.local` :
+
+```bash
+RESEND_API_KEY=re_...
+# Optionnel, si un domaine est vérifié sur Resend :
+# RESEND_FROM=Le Ratty <contact@leratty.fr>
+```
+
+Sans domaine vérifié, l'expéditeur par défaut `onboarding@resend.dev` n'envoie
+que vers l'adresse du compte Resend (ici `leraty74.entremont@gmail.com`), ce qui
+suffit puisque c'est justement la destinataire. Pour envoyer depuis une adresse
+`@leratty.fr`, vérifier le domaine sur Resend et renseigner `RESEND_FROM`.
+Route : `app/api/contact/route.ts`.
+
+## Classement
+
+Le badge « Meublé de Tourisme ★★ » (composant `components/classement-badge.tsx`)
+s'appuie sur `classement` dans `lib/logements.ts` (nombre d'étoiles + année).
 
 ## Bilingue FR / EN
 

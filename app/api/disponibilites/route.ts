@@ -2,27 +2,34 @@ import { NextRequest } from "next/server";
 
 /**
  * Renvoie les périodes occupées d'un bien à partir de calendriers iCal
- * (liens Abritel .ics, définis dans .env.local) :
+ * (liens .ics Abritel et/ou Airbnb, définis dans .env.local). Chaque bien
+ * peut avoir plusieurs sources : toutes sont fusionnées.
  *
- *   ICS_URL_MARMOTTE  → réservations de La Marmotte seule
- *   ICS_URL_BOUQUETIN → réservations du Bouquetin seul
- *   ICS_URL_MAISON    → réservations de la maison entière (bloque les deux)
+ *   ICS_URL_MARMOTTE / ICS_URL_MARMOTTE_AIRBNB   → La Marmotte seule
+ *   ICS_URL_BOUQUETIN / ICS_URL_BOUQUETIN_AIRBNB → Le Bouquetin seul
+ *   ICS_URL_MAISON / ICS_URL_MAISON_AIRBNB       → calendrier « maison entière »
  *
- * Une réservation « maison » rend les deux appartements indisponibles, et la
- * maison entière est indisponible dès qu'un des deux appartements est réservé.
+ * Les deux appartements sont indépendants : la disponibilité de chaque
+ * appartement ne dépend QUE de son propre calendrier. La page « maison
+ * entière » est indisponible dès que l'un des deux appartements (ou le
+ * calendrier maison lui-même) est occupé.
+ *
+ * NB : le flux Abritel « maison » est un calendrier agrégé (il contient déjà
+ * les réservations des deux appartements) ; on ne l'utilise donc PAS comme
+ * source des appartements, sinon une résa Marmotte bloquerait le Bouquetin.
  */
 
 type Plage = { start: string; end: string };
 
-const FEEDS: Record<string, string | undefined> = {
-  marmotte: process.env.ICS_URL_MARMOTTE,
-  bouquetin: process.env.ICS_URL_BOUQUETIN,
-  maison: process.env.ICS_URL_MAISON,
+const FEEDS: Record<string, (string | undefined)[]> = {
+  marmotte: [process.env.ICS_URL_MARMOTTE, process.env.ICS_URL_MARMOTTE_AIRBNB],
+  bouquetin: [process.env.ICS_URL_BOUQUETIN, process.env.ICS_URL_BOUQUETIN_AIRBNB],
+  maison: [process.env.ICS_URL_MAISON, process.env.ICS_URL_MAISON_AIRBNB],
 };
 
 const SOURCES: Record<string, string[]> = {
-  marmotte: ["marmotte", "maison"],
-  bouquetin: ["bouquetin", "maison"],
+  marmotte: ["marmotte"],
+  bouquetin: ["bouquetin"],
   maison: ["marmotte", "bouquetin", "maison"],
 };
 
@@ -66,9 +73,13 @@ export async function GET(request: NextRequest) {
     return Response.json({ error: "bien inconnu" }, { status: 400 });
   }
 
-  const urls = sources
-    .map((s) => FEEDS[s])
-    .filter((u): u is string => Boolean(u));
+  const urls = Array.from(
+    new Set(
+      sources
+        .flatMap((s) => FEEDS[s] ?? [])
+        .filter((u): u is string => Boolean(u)),
+    ),
+  );
 
   const resultats = await Promise.allSettled(
     urls.map(async (url) => {
@@ -78,9 +89,18 @@ export async function GET(request: NextRequest) {
     }),
   );
 
-  const busy = resultats
+  const toutes = resultats
     .filter((r): r is PromiseFulfilledResult<Plage[]> => r.status === "fulfilled")
-    .flatMap((r) => r.value)
+    .flatMap((r) => r.value);
+
+  const vues = new Set<string>();
+  const busy = toutes
+    .filter((p) => {
+      const cle = `${p.start}_${p.end}`;
+      if (vues.has(cle)) return false;
+      vues.add(cle);
+      return true;
+    })
     .sort((a, b) => a.start.localeCompare(b.start));
 
   return Response.json({ busy, configure: urls.length > 0 });

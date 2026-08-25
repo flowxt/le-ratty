@@ -149,7 +149,7 @@ const marmotteDef: LogementDef = {
       },
     },
     {
-      src: "/photo/marmotte/vue-cuisine.jpg",
+      src: "/photo/marmotte/20240114_171428.jpg",
       alt: {
         fr: "Cuisine équipée",
         en: "Fully equipped kitchen",

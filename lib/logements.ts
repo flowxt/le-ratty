@@ -139,7 +139,7 @@ const marmotteDef: LogementDef = {
   photos: [
     {
       src: "/photo/marmotte/salon-vue.jpeg",
-      alt: { fr: "Salon avec vue de l'appartement La Marmotte", en: "Living room with a view, La Marmotte" },
+      alt: { fr: "Salon - salle à manger", en: "Living-dining room" },
     },
     {
       src: "/photo/marmotte/salon-2couchage.jpeg",
@@ -151,8 +151,8 @@ const marmotteDef: LogementDef = {
     {
       src: "/photo/marmotte/vue-cuisine.jpg",
       alt: {
-        fr: "Cuisine équipée et grande table de La Marmotte",
-        en: "Fully equipped kitchen and large table, La Marmotte",
+        fr: "Cuisine équipée",
+        en: "Fully equipped kitchen",
       },
     },
     {
@@ -161,19 +161,25 @@ const marmotteDef: LogementDef = {
     },
     {
       src: "/photo/marmotte/lit-double-marmotte.jpeg",
-      alt: { fr: "Chambre avec lit double de La Marmotte", en: "Double bedroom, La Marmotte" },
+      alt: {
+        fr: "Deuxième chambre avec lit double (ou 2 lits simples au choix)",
+        en: "Second bedroom with a double bed (or 2 single beds on request)",
+      },
     },
     {
       src: "/photo/marmotte/chambre-2lits.jpeg",
-      alt: { fr: "Chambre avec deux lits simples", en: "Bedroom with two single beds" },
+      alt: {
+        fr: "Deuxième chambre avec 2 lits simples (ou 1 lit double au choix)",
+        en: "Second bedroom with 2 single beds (or a double bed on request)",
+      },
     },
     {
       src: "/photo/marmotte/chambre2.jpeg",
-      alt: { fr: "Chambre de l'appartement La Marmotte", en: "Bedroom, La Marmotte" },
+      alt: { fr: "Première chambre", en: "First bedroom" },
     },
     {
       src: "/photo/marmotte/chambre2-vue.jpeg",
-      alt: { fr: "Chambre avec vue sur la montagne", en: "Bedroom with mountain view" },
+      alt: { fr: "Première chambre, vue sur la montagne", en: "First bedroom, mountain view" },
     },
     ...sdbCommune,
     {
@@ -209,8 +215,8 @@ const bouquetinDef: LogementDef = {
       en: "Two bedrooms, a large living room with two sofa beds, a fully equipped kitchen with a large convivial table and a bathroom with a walk-in shower make up this fully renovated home.",
     },
     {
-      fr: "Comme La Marmotte, il dispose d'une terrasse avec barbecue, d'un parking privé sous vidéosurveillance, d'une machine à laver et d'un box fermé à clé pour skis et vélos.",
-      en: "Like La Marmotte, it has a terrace with barbecue, private parking under video surveillance, a washing machine and a lockable storage room for skis and bikes.",
+      fr: "Comme La Marmotte, il dispose d'une terrasse avec barbecue — désormais clôturée par un portillon à l'étage —, d'un parking privé sous vidéosurveillance, d'une machine à laver et d'un box fermé à clé pour skis et vélos.",
+      en: "Like La Marmotte, it has a terrace with barbecue — now enclosed with a gate on the first floor —, private parking under video surveillance, a washing machine and a lockable storage room for skis and bikes.",
     },
   ],
   couchages: [
@@ -239,7 +245,10 @@ const bouquetinDef: LogementDef = {
     { fr: "Wifi", en: "Wifi" },
     { fr: "Machine à laver (au sous-sol)", en: "Washing machine (in the basement)" },
     { fr: "Box fermé à clé pour skis et vélos", en: "Lockable ski and bike storage" },
-    { fr: "Balcon-terrasse avec barbecue", en: "Balcony-terrace with barbecue" },
+    {
+      fr: "Balcon-terrasse clôturé (portillon) avec barbecue",
+      en: "Enclosed balcony-terrace (gate) with barbecue",
+    },
     {
       fr: "Parking privé sous vidéosurveillance",
       en: "Private parking under video surveillance",
@@ -254,8 +263,8 @@ const bouquetinDef: LogementDef = {
     {
       src: "/photo/lebouquetin/salon.jpeg",
       alt: {
-        fr: "Salon avec cheminée de l'appartement Le Bouquetin",
-        en: "Living room with fireplace, Le Bouquetin",
+        fr: "Cheminée décorative du salon",
+        en: "Decorative fireplace in the living room",
       },
     },
     {
@@ -267,41 +276,54 @@ const bouquetinDef: LogementDef = {
       alt: { fr: "Cuisine équipée du Bouquetin", en: "Fully equipped kitchen, Le Bouquetin" },
     },
     {
+      src: "/photo/lebouquetin/table-bouquetin-8pers.jpeg",
+      alt: {
+        fr: "Grande table pour 8 personnes, face au balcon",
+        en: "Large table seating 8, facing the balcony",
+      },
+    },
+    {
       src: "/photo/lebouquetin/chambre-double.jpeg",
-      alt: { fr: "Chambre avec lit double", en: "Bedroom with double bed" },
+      alt: {
+        fr: "Deuxième chambre (2 lits simples ou 1 lit double au choix)",
+        en: "Second bedroom (2 single beds or a double bed on request)",
+      },
     },
     {
       src: "/photo/lebouquetin/double-lit.jpeg",
-      alt: { fr: "Chambre avec lit double du Bouquetin", en: "Double bedroom, Le Bouquetin" },
+      alt: {
+        fr: "Deuxième chambre (2 lits simples ou 1 lit double au choix)",
+        en: "Second bedroom (2 single beds or a double bed on request)",
+      },
     },
     {
       src: "/photo/lebouquetin/chambre-bouquetin.jpeg",
-      alt: { fr: "Chambre de l'appartement Le Bouquetin", en: "Bedroom, Le Bouquetin" },
+      alt: { fr: "Première chambre", en: "First bedroom" },
     },
     {
       src: "/photo/lebouquetin/chambre2.jpeg",
-      alt: { fr: "Deuxième chambre du Bouquetin", en: "Second bedroom, Le Bouquetin" },
+      alt: { fr: "Première chambre", en: "First bedroom" },
     },
     ...sdbCommune,
     {
       src: "/photo/lebouquetin/acces-entree.jpeg",
       alt: {
-        fr: "Accès au Bouquetin par le balcon, vue sur les montagnes",
-        en: "Balcony access to Le Bouquetin, mountain view",
+        fr: "Balcon du Bouquetin, vue sur les montagnes",
+        en: "Le Bouquetin balcony, mountain view",
       },
     },
     {
       src: "/photo/lebouquetin/terrasse.jpeg",
       alt: {
-        fr: "Terrasse avec parasol et barbecue",
-        en: "Terrace with parasol and barbecue",
+        fr: "Terrasse de l'étage, clôturée par un portillon, avec barbecue",
+        en: "First-floor terrace, enclosed with a gate, with barbecue",
       },
     },
     {
       src: "/photo/lebouquetin/terrasse-suite.jpeg",
       alt: {
-        fr: "Terrasse avec les garde-corps en découpe laser Le Ratty",
-        en: "Terrace with the laser-cut Le Ratty railings",
+        fr: "Terrasse de l'étage et garde-corps en découpe laser Le Ratty",
+        en: "First-floor terrace and laser-cut Le Ratty railings",
       },
     },
     localCommun,
@@ -386,6 +408,13 @@ const maisonDef: LogementDef = {
       alt: { fr: "La maison Le Ratty vue de l'extérieur", en: "Le Ratty seen from outside" },
     },
     {
+      src: "/photo/maison-ext.jpeg",
+      alt: {
+        fr: "Façade du Ratty au soleil, avec son escalier extérieur",
+        en: "Sunlit façade of Le Ratty with its outdoor staircase",
+      },
+    },
+    {
       src: "/photo/lebouquetin/acces-entree.jpeg",
       alt: {
         fr: "Balcon du premier étage face aux montagnes",
@@ -395,8 +424,8 @@ const maisonDef: LogementDef = {
     {
       src: "/photo/lebouquetin/terrasse.jpeg",
       alt: {
-        fr: "Terrasse du rez-de-chaussée avec barbecue",
-        en: "Ground-floor terrace with barbecue",
+        fr: "Terrasse du premier étage, clôturée par un portillon, avec barbecue",
+        en: "First-floor terrace, enclosed with a gate, with barbecue",
       },
     },
     {
@@ -421,6 +450,13 @@ const maisonDef: LogementDef = {
     {
       src: "/photo/lebouquetin/cuisine.jpeg",
       alt: { fr: "Cuisine du Bouquetin", en: "Kitchen, Le Bouquetin" },
+    },
+    {
+      src: "/photo/table-14p.jpeg",
+      alt: {
+        fr: "Grande tablée dressée pour réunir jusqu'à 14 personnes",
+        en: "Large table set to bring together up to 14 guests",
+      },
     },
     {
       src: "/photo/lebouquetin/parking.jpeg",

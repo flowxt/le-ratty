@@ -300,16 +300,19 @@ const bouquetinDef: LogementDef = {
       src: "/photo/lebouquetin/chambre-bouquetin.jpeg",
       alt: { fr: "Première chambre", en: "First bedroom" },
     },
-    {
-      src: "/photo/lebouquetin/chambre2.jpeg",
-      alt: { fr: "Première chambre", en: "First bedroom" },
-    },
     ...sdbCommune,
     {
       src: "/photo/lebouquetin/acces-entree.jpeg",
       alt: {
         fr: "Balcon du Bouquetin, vue sur les montagnes",
         en: "Le Bouquetin balcony, mountain view",
+      },
+    },
+    {
+      src: "/photo/lebouquetin/portillon.jpeg",
+      alt: {
+        fr: "Portillon de sécurité : la terrasse de l'étage est entièrement clôturée",
+        en: "Safety gate: the first-floor terrace is fully enclosed",
       },
     },
     {

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Lato, Playfair_Display } from "next/font/google";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
+import { SITE_NOM, SITE_URL } from "@/lib/seo";
 import "./globals.css";
 
 const playfair = Playfair_Display({
@@ -16,18 +17,35 @@ const lato = Lato({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL("https://leratty.fr"),
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "Le Ratty — Locations à Entremont, Haute-Savoie",
-    template: "%s · Le Ratty",
+    template: `%s · ${SITE_NOM}`,
   },
   description:
     "Le Ratty : deux appartements de charme à louer à Entremont (Glières-Val-de-Borne), à 7 minutes du Grand-Bornand. La Marmotte (6 pers.), Le Bouquetin (8 pers.) ou la maison entière jusqu'à 14 personnes.",
-  alternates: {
-    canonical: "/",
-    languages: {
-      fr: "/",
-      en: "/en",
+  applicationName: SITE_NOM,
+  keywords: [
+    "Le Ratty",
+    "location Entremont",
+    "location vacances Haute-Savoie",
+    "Glières-Val-de-Borne",
+    "Grand-Bornand",
+    "La Clusaz",
+    "Plateau des Glières",
+    "appartement montagne",
+    "location groupe 14 personnes",
+    "meublé de tourisme",
+  ],
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
     },
   },
 };

@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { adresse, contact } from "@/lib/logements";
 import { langFromPathname, localePrefix } from "@/lib/i18n";
+import AncvBadge from "@/components/ancv-badge";
 
 const T = {
   fr: {
@@ -96,6 +97,11 @@ export default function Footer() {
               </Link>
             </li>
           </ul>
+        </div>
+      </div>
+      <div className="border-t border-cream/10 px-4 py-6 sm:px-6">
+        <div className="mx-auto flex max-w-6xl justify-center md:justify-start">
+          <AncvBadge lang={lang} />
         </div>
       </div>
       <div className="border-t border-cream/10 py-4 text-center text-xs text-cream/50">

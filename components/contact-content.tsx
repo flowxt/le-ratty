@@ -1,4 +1,5 @@
 import ContactForm from "@/components/contact-form";
+import AncvBadge from "@/components/ancv-badge";
 import { adresse, contact } from "@/lib/logements";
 import type { Lang } from "@/lib/i18n";
 
@@ -34,6 +35,11 @@ const T = {
         detail:
           "Nous privilégions un accueil physique : nous vous remettons les clés en personne et vous faisons visiter les lieux.",
       },
+      {
+        titre: "Chèques-Vacances",
+        detail:
+          "Nous acceptons les Chèques-Vacances ANCV (format papier) pour le règlement de votre séjour.",
+      },
     ],
   },
   en: {
@@ -67,6 +73,11 @@ const T = {
         detail:
           "We favour a personal welcome: we hand you the keys in person and show you around.",
       },
+      {
+        titre: "Chèque-Vacances",
+        detail:
+          "We accept ANCV Chèque-Vacances (paper holiday vouchers) to pay for your stay.",
+      },
     ],
   },
 };
@@ -95,6 +106,10 @@ export default function ContactContent({ lang = "fr" }: { lang?: Lang }) {
         >
           {contact.email}
         </a>
+      </div>
+
+      <div className="mt-6">
+        <AncvBadge lang={lang} className="ring-sand-dark" />
       </div>
 
       <div className="mt-12 grid gap-12 lg:grid-cols-[3fr_2fr]">

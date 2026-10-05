@@ -18,25 +18,37 @@ npm run dev
 
 Le site tourne sur [http://localhost:3000](http://localhost:3000).
 
-## Calendriers de disponibilités (Abritel)
+## Calendriers de disponibilités (iCal)
 
 Chaque page logement affiche un calendrier « Disponible / Occupé » alimenté par
-les liens **iCal Abritel**. Dans `.env.local` :
+les liens **iCal** Abritel, Airbnb et Booking.com (fusionnés). Dans `.env.local` :
 
 ```bash
+# Abritel
 ICS_URL_MARMOTTE=https://www.abritel.fr/icalendar/xxxx.ics?nonTentative
 ICS_URL_BOUQUETIN=https://www.abritel.fr/icalendar/xxxx.ics?nonTentative
 ICS_URL_MAISON=https://www.abritel.fr/icalendar/xxxx.ics?nonTentative
+
+# Airbnb
+ICS_URL_MARMOTTE_AIRBNB=https://www.airbnb.fr/calendar/ical/xxxx.ics?s=...
+ICS_URL_BOUQUETIN_AIRBNB=https://www.airbnb.fr/calendar/ical/xxxx.ics?s=...
+ICS_URL_MAISON_AIRBNB=https://www.airbnb.fr/calendar/ical/xxxx.ics?s=...
+
+# Booking.com
+ICS_URL_MARMOTTE_BOOKING=https://admin.booking.com/hotel/hoteladmin/ical.html?t=...
+ICS_URL_BOUQUETIN_BOOKING=https://admin.booking.com/hotel/hoteladmin/ical.html?t=...
+ICS_URL_MAISON_BOOKING=https://admin.booking.com/hotel/hoteladmin/ical.html?t=...
 ```
 
-Le site relit les calendriers toutes les 30 minutes (`app/api/disponibilites/route.ts`).
+Toute variable vide ou absente est ignorée. Le site relit les calendriers
+toutes les 30 minutes (`app/api/disponibilites/route.ts`).
 Logique appliquée :
 
 - une réservation « Maison entière » rend **les deux** appartements occupés ;
 - la page « maison entière » est occupée dès qu'**un** des biens est réservé.
 
-En production (Vercel…), renseigner ces 3 variables dans les variables
-d'environnement du projet.
+En production (Vercel…), renseigner les mêmes variables dans l’environnement
+du projet.
 
 ## Formulaire de contact (Resend)
 

@@ -2,12 +2,12 @@ import { NextRequest } from "next/server";
 
 /**
  * Renvoie les périodes occupées d'un bien à partir de calendriers iCal
- * (liens .ics Abritel et/ou Airbnb, définis dans .env.local). Chaque bien
- * peut avoir plusieurs sources : toutes sont fusionnées.
+ * (liens .ics Abritel, Airbnb et/ou Booking, définis dans .env.local). Chaque
+ * bien peut avoir plusieurs sources : toutes sont fusionnées.
  *
- *   ICS_URL_MARMOTTE / ICS_URL_MARMOTTE_AIRBNB   → La Marmotte seule
- *   ICS_URL_BOUQUETIN / ICS_URL_BOUQUETIN_AIRBNB → Le Bouquetin seul
- *   ICS_URL_MAISON / ICS_URL_MAISON_AIRBNB       → calendrier « maison entière »
+ *   ICS_URL_MARMOTTE / ICS_URL_MARMOTTE_AIRBNB / ICS_URL_MARMOTTE_BOOKING
+ *   ICS_URL_BOUQUETIN / ICS_URL_BOUQUETIN_AIRBNB / ICS_URL_BOUQUETIN_BOOKING
+ *   ICS_URL_MAISON / ICS_URL_MAISON_AIRBNB / ICS_URL_MAISON_BOOKING
  *
  * Les deux appartements sont indépendants : la disponibilité de chaque
  * appartement ne dépend QUE de son propre calendrier. La page « maison
@@ -22,9 +22,21 @@ import { NextRequest } from "next/server";
 type Plage = { start: string; end: string };
 
 const FEEDS: Record<string, (string | undefined)[]> = {
-  marmotte: [process.env.ICS_URL_MARMOTTE, process.env.ICS_URL_MARMOTTE_AIRBNB],
-  bouquetin: [process.env.ICS_URL_BOUQUETIN, process.env.ICS_URL_BOUQUETIN_AIRBNB],
-  maison: [process.env.ICS_URL_MAISON, process.env.ICS_URL_MAISON_AIRBNB],
+  marmotte: [
+    process.env.ICS_URL_MARMOTTE,
+    process.env.ICS_URL_MARMOTTE_AIRBNB,
+    process.env.ICS_URL_MARMOTTE_BOOKING,
+  ],
+  bouquetin: [
+    process.env.ICS_URL_BOUQUETIN,
+    process.env.ICS_URL_BOUQUETIN_AIRBNB,
+    process.env.ICS_URL_BOUQUETIN_BOOKING,
+  ],
+  maison: [
+    process.env.ICS_URL_MAISON,
+    process.env.ICS_URL_MAISON_AIRBNB,
+    process.env.ICS_URL_MAISON_BOOKING,
+  ],
 };
 
 const SOURCES: Record<string, string[]> = {
